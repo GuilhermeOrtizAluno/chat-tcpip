@@ -46,15 +46,22 @@ public class CandidateService {
     }
 
     public static BaseResponse Update(CandidateRequest request)  {
-        var candidate = new Candidate(request.email, request.nome, request.senha);
-        var result = CandidateDB.Update(candidate);
+        var validateEmail = CandidateValidation.ValidateEmail(request.email);
+        var validatePassword = CandidateValidation.ValidatePassword(request.senha);
 
-        var response = new BaseResponse();
-        if(result){
-            response.status = 201;
+        var response = new CreateCandidateResponse();
+        if(validateEmail && validatePassword){
+            var candidate = new Candidate(request.nome, request.email, request.senha);
+            var result = CandidateDB.Update(candidate);
+            if(result){
+                response.status = 201;
+            }else {
+                response.status = 404;
+                response.mensagem = "E-mail não encontrado";
+            }
         }else {
             response.status = 404;
-            response.mensagem = "E-mail não encontrado";
+            response.mensagem = "";
         }
 
         return response;

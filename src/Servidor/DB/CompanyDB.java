@@ -49,6 +49,7 @@ public class CompanyDB extends BaseDB{
 
     public static boolean Update(Company company) {
         if (Read(company.Email) == null) {
+            Util.PrintError("teste");
             return false;
         }
 

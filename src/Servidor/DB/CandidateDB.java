@@ -45,6 +45,7 @@ public class CandidateDB extends BaseDB {
 
     public static boolean Update(Candidate candidate) {
         if (Read(candidate.Email) == null) {
+            Util.PrintError("teste");
             return false;
         }
 

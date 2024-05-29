@@ -18,6 +18,11 @@ public class CompanyService {
             response.status = 201;
             response.nome = company.Name;
             response.senha = company.Password;
+            response.descricao = company.Description;
+            response.ramo = company.Ramo;
+            response.cnpj = company.CNPJ;
+            response.razaoSocial = company.CorporateName;
+
         }else {
             response.status = 404;
             response.mensagem = "E-mail não encontrado";
@@ -46,15 +51,23 @@ public class CompanyService {
     }
 
     public static BaseResponse Update(CompanyRequest request)  {
-        var company = new Company(request.email, request.nome, request.senha);
-        var result = CompanyDB.Update(company);
+        var validateEmail = CompanyValidation.ValidateEmail(request.email);
+        var validatePassword = CompanyValidation.ValidatePassword(request.senha);
 
-        var response = new BaseResponse();
-        if(result){
-            response.status = 201;
+        var response = new CreateCompanyResponse();
+        if(validateEmail && validatePassword){
+            var company = new Company(request.nome, request.email, request.senha,
+                    request.ramo, request.descricao, request.cnpj, request.razaoSocial);
+            var result = CompanyDB.Update(company);
+            if(result){
+                response.status = 201;
+            }else {
+                response.status = 404;
+                response.mensagem = "E-mail não encontrado";
+            }
         }else {
             response.status = 404;
-            response.mensagem = "E-mail não encontrado";
+            response.mensagem = "";
         }
 
         return response;
