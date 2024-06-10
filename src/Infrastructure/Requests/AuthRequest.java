@@ -1,6 +1,6 @@
 package Infrastructure.Requests;
 
-public class SignInRequest {
+public class AuthRequest extends BaseRequest {
     public String email;
     public String senha;
 }

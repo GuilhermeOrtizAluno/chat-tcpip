@@ -1,8 +1,13 @@
 package Servidor.DB;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Objects;
 
+import Infrastructure.Requests.CandidateCompetenciesRequest;
+import Infrastructure.Responses.CandidateCompetencyResponse;
 import Servidor.Entitites.Candidate;
+import Servidor.Entitites.Competence;
 import Servidor.Entitites.User;
 import Utils.Util;
 
@@ -102,6 +107,76 @@ public class CandidateDB extends BaseDB {
             return false;
         }
 
+    }
+
+    public static ArrayList<CandidateCompetencyResponse> GetCompetencies(int candidateId) {
+        var competences = new ArrayList<CandidateCompetencyResponse>(){};
+        var sql = "SELECT c.*,  cc.Experiencia " +
+                "FROM candidato_x_competencia cc " +
+                "INNER JOIN competencia c ON c.ID = cc.CompetenciaID " +
+                "WHERE cc.CandidatoID = ?";
+
+        try (var connection = getConnection();
+             var stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, candidateId);
+
+            var rs = stmt.executeQuery();
+            while (rs.next()) {
+                competences.add(Competence.EntityCandidateCompetency(rs));
+            }
+        } catch (SQLException ex) {
+            Util.PrintError("SQL error occurred: " + ex.getMessage());
+            ex.printStackTrace();
+        }
+
+        return  competences;
+    }
+
+    public static void CreateCompetencies(int candidateId, CandidateCompetenciesRequest request)  {
+        var competences = request.competenciaExperiencia.stream().map(c -> c.competencia).toList();
+        var competenciasFiltered = CompetenceDB.FilterCompetences(competences);
+
+        var sql = "INSERT INTO candidato_x_competencia (CandidatoID, CompetenciaID, Experiencia) " +
+                "VALUES (?, ?, ?)";
+        try (var connection = getConnection();
+             var stmt = connection.prepareStatement(sql)) {
+
+            for (var competency : competenciasFiltered) {
+                var experience = request.competenciaExperiencia.stream()
+                        .filter(c -> Objects.equals(c.competencia, competency.Title))
+                        .findFirst().orElse(null);
+
+                stmt.setInt(1, candidateId);
+                stmt.setInt(2, competency.Id);
+                stmt.setInt(3, experience.experiencia);
+                stmt.addBatch();
+            }
+            stmt.executeBatch();
+        } catch (SQLException ex) {
+            Util.PrintError("SQL error occurred: " + ex.getMessage());
+            ex.printStackTrace();
+        }
+    }
+
+    public static void UpdateCompetencies(int candidateId, CandidateCompetenciesRequest request) {
+        DeleteCompetencies(candidateId);
+        CreateCompetencies(candidateId, request);
+    }
+
+    public static boolean DeleteCompetencies(int id)  {
+
+        var sql1 = "DELETE FROM candidato_x_competencia WHERE CandidatoID = ?";
+        try (var connection = getConnection();
+             var statement = connection.prepareStatement(sql1)) {
+
+            statement.setInt(1, id);
+            int affectedRows = statement.executeUpdate();
+            return affectedRows > 0;
+        } catch (SQLException ex) {
+            Util.PrintError("SQL error occurred: " + ex.getMessage());
+            ex.printStackTrace();
+            return false;
+        }
     }
 
 }

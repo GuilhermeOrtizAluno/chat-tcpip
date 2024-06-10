@@ -2,6 +2,7 @@ package Servidor.Entitites;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 public class Company extends User {
     public String Ramo;
@@ -9,9 +10,10 @@ public class Company extends User {
     public String CNPJ;
     public String CorporateName;
 
-    public Company(String name, String email, String password, String ramo,
+    public List<Opportunity> Opportunities;
+
+    public Company(String email, String password, String ramo,
                    String description, String cnpj, String corporateName) {
-        this.Name = name;
         this.Email = email;
         this.Password = password;
         this.Ramo = ramo;
@@ -20,20 +22,31 @@ public class Company extends User {
         this.CorporateName = corporateName;
     }
 
-    public Company(String name, String email, String password) {
-        super(name, email, password);
+    public Company(int id, String email, String password, String ramo,
+                   String description, String cnpj, String corporateName) {
+        this.Id = id;
+        this.Email = email;
+        this.Password = password;
+        this.Ramo = ramo;
+        this.Description = description;
+        this.CNPJ = cnpj;
+        this.CorporateName = corporateName;
+    }
+
+    public Company(String email, String password) {
+        super(email, password);
     }
 
     public Company(){}
 
     public static Company Entity(ResultSet rs) throws SQLException {
-        String email = rs.getString("Email");
-        String name = rs.getString("Nome");
-        String password = rs.getString("Senha");
-        String ramo = rs.getString("Ramo");
-        String description = rs.getString("Descricao");
-        String cnpj = rs.getString("CNPJ");
-        String corporateName = rs.getString("Razao_Social");
-        return new Company(name, email, password,ramo, description, cnpj, corporateName);
+        var id = rs.getInt("ID");
+        var email = rs.getString("Email");
+        var password = rs.getString("Senha");
+        var ramo = rs.getString("Ramo");
+        var description = rs.getString("Descricao");
+        var cnpj = rs.getString("CNPJ");
+        var corporateName = rs.getString("Razao_Social");
+        return new Company(id, email, password,ramo, description, cnpj, corporateName);
     }
 }

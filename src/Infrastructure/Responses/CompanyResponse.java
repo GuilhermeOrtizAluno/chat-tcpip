@@ -1,8 +1,6 @@
-package Infrastructure.Responses.Company;
+package Infrastructure.Responses;
 
-import Infrastructure.Responses.BaseResponse;
-
-public class ReadCompanyResponse extends BaseResponse {
+public class CompanyResponse extends BaseResponse {
     public String nome;
     public String senha;
     public String razaoSocial;

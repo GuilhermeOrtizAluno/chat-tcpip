@@ -1,21 +1,33 @@
 package Servidor.Controllers;
 
-import Infrastructure.Requests.CandidateRequest;
-import Servidor.Services.CandidateService;
+import Infrastructure.Requests.AuthRequest;
+import Servidor.Services.AuthService;
 
 import java.io.PrintWriter;
 
 public class AuthController extends BaseController {
 
-    public static void SignIn(PrintWriter out, String json){
-        var request = _gson.fromJson(json, CandidateRequest.class);
+    public static void SignInCandidate(PrintWriter out, String json){
+        var request = _gson.fromJson(json, AuthRequest.class);
 
-        var response = CandidateService.Read(request);
+        var response = AuthService.SignInCandidate(request);
         var result = _gson.toJson(response);
         out.println(result);
     }
 
-    public static void Logout(){
+    public static void SignInCompany(PrintWriter out, String json){
+        var request = _gson.fromJson(json, AuthRequest.class);
 
+        var response = AuthService.SignInCompany(request);
+        var result = _gson.toJson(response);
+        out.println(result);
+    }
+
+    public static void Logout(PrintWriter out, String json){
+        var request = _gson.fromJson(json, AuthRequest.class);
+
+        var response = AuthService.Logout(request.token);
+        var result = _gson.toJson(response);
+        out.println(result);
     }
 }
