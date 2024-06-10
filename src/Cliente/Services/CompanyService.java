@@ -23,9 +23,6 @@ public class CompanyService extends BaseService {
         Util.Println("Digite email:");
         var email = _scanner.nextLine();
 
-        Util.Println("Digite nome:");
-        var nome = _scanner.nextLine();
-
         Util.Println("Digite senha:");
         var senha = _scanner.nextLine();
 
@@ -44,7 +41,6 @@ public class CompanyService extends BaseService {
         var request = new CompanyRequest();
         request.operacao = "cadastrarEmpresa";
         request.email = email;
-        request.nome = nome;
         request.senha = senha;
         request.cnpj = cnpj;
         request.descricao = descricao;
@@ -83,7 +79,6 @@ public class CompanyService extends BaseService {
         request.operacao = "atualizarEmpresa";
         request.token = token;
         request.email = email;
-        request.nome = nome;
         request.senha = senha;
         request.cnpj = cnpj;
         request.descricao = descricao;
