@@ -16,7 +16,19 @@ public class OpportunityController extends BaseController {
     }
 
     public static void All(PrintWriter out, String json){
+        var request = _gson.fromJson(json, OpportunityRequest.class);
 
+        var response = OpportunityService.All(request);
+        var result = _gson.toJson(response);
+        out.println(result);
+    }
+
+    public static void Filter(PrintWriter out, String json){
+        var request = _gson.fromJson(json, OpportunityRequest.class);
+
+        var response = OpportunityService.Filter(request);
+        var result = _gson.toJson(response);
+        out.println(result);
     }
 
     public static void Create(PrintWriter out, String json){

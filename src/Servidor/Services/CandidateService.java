@@ -7,10 +7,12 @@ import Infrastructure.Responses.BaseResponse;
 import Infrastructure.Responses.CandidateCompetenciesResponse;
 import Infrastructure.Responses.CandidateResponse;
 import Servidor.DB.CandidateDB;
+import Servidor.DB.TokenDB;
 import Servidor.Entitites.Candidate;
 import Servidor.Services.Validations.CandidateValidation;
 
 import java.util.Objects;
+import java.util.UUID;
 
 public class CandidateService {
 
@@ -36,16 +38,28 @@ public class CandidateService {
         var validatePassword = CandidateValidation.ValidatePassword(request.senha);
 
         var response = new AuthResponse();
-        if(validateEmail && validatePassword){
-            var candidate = new Candidate(request.nome, request.email, request.senha);
-            CandidateDB.Create(candidate);
-            response.status = 200;
-            response.token = "Usuario Cadastrado com Sucesso!";
-        }else {
-            response.status = 404;
-            response.mensagem = "";
+
+        if(!validateEmail){
+            response.status = 422;
+            response.mensagem = "Formato de email incorreto";
+            return response;
         }
 
+        if(!validatePassword){
+            response.status = 422;
+            response.mensagem = "Formato de senha incorreto";
+            return response;
+        }
+
+        var candidate = new Candidate(request.nome, request.email, request.senha);
+        CandidateDB.Create(candidate);
+
+        var uuid = UUID.randomUUID();
+        var token = uuid.toString();
+        TokenDB.Create(token, candidate.Id,null);
+
+        response.status = 201;
+        response.token = token;
         return response;
     }
 

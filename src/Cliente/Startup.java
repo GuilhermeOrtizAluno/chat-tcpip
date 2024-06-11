@@ -65,8 +65,10 @@ public class Startup {
                         case 6 -> json = CompanyService.Delete();
                         case 7 -> json = OpportunityService.Read();
                         case 8 -> json = OpportunityService.Create();
-                        case 9 -> json = OpportunityService.Update();
-                        case 10 -> json = OpportunityService.Delete();
+                        case 9 -> json = OpportunityService.All();
+                        case 10 -> json = OpportunityService.Filter();
+                        case 11 -> json = OpportunityService.Update();
+                        case 12 -> json = OpportunityService.Delete();
                         default -> Util.Println("Opcao invalida:");
                     }
                 }
@@ -126,9 +128,11 @@ public class Startup {
     private void OptionsCompany(){
         OptionsGeneric();
         Util.Println("7 - Visualizar Vaga");
-        Util.Println("8 - Adicionar Vaga");
-        Util.Println("9 - Editar Vaga");
-        Util.Println("10 - Deletar Vaga");
+        Util.Println("8 - Listar Vaga");
+        Util.Println("9 - Filtrar Vaga");
+        Util.Println("10 - Adicionar Vaga");
+        Util.Println("11 - Editar Vaga");
+        Util.Println("12 - Deletar Vaga");
         Util.Println("Escolha uma opcao:");
     }
 }

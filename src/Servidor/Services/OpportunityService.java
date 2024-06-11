@@ -2,6 +2,8 @@ package Servidor.Services;
 
 import Infrastructure.Requests.OpportunityRequest;
 import Infrastructure.Responses.BaseResponse;
+import Infrastructure.Responses.OpportunityListItenResponse;
+import Infrastructure.Responses.OpportunityListResponse;
 import Infrastructure.Responses.OpportunityResponse;
 import Servidor.DB.CompanyDB;
 import Servidor.DB.OpportunityDB;
@@ -23,6 +25,40 @@ public class OpportunityService {
             response.estado = opportunity.Status;
             response.competencias  = opportunity.Competences.stream()
                     .map(comp -> comp.Title)
+                    .collect(Collectors.toList());
+        }else {
+            response.status = 404;
+            response.mensagem = "E-mail não encontrado";
+        }
+
+        return response;
+    }
+
+    public static OpportunityListResponse All(OpportunityRequest request) {
+        var opportunities = OpportunityDB.All();
+        var response = new OpportunityListResponse();
+
+        if(opportunities != null){
+            response.status = 201;
+            response.vagas = opportunities.stream()
+                    .map(opportunity -> new OpportunityListItenResponse(opportunity.Id, opportunity.Description))
+                    .collect(Collectors.toList());
+        }else {
+            response.status = 404;
+            response.mensagem = "E-mail não encontrado";
+        }
+
+        return response;
+    }
+
+    public static OpportunityListResponse Filter(OpportunityRequest request) {
+        var opportunities = OpportunityDB.All();
+        var response = new OpportunityListResponse();
+
+        if(opportunities != null){
+            response.status = 201;
+            response.vagas = opportunities.stream()
+                    .map(opportunity -> new OpportunityListItenResponse(opportunity.Id, opportunity.Description))
                     .collect(Collectors.toList());
         }else {
             response.status = 404;

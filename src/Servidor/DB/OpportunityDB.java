@@ -33,6 +33,42 @@ public class OpportunityDB extends BaseDB{
         }
     }
 
+    public static ArrayList<Opportunity> All() {
+        var opportunities = new ArrayList<Opportunity>(){};
+        var sql = "SELECT * FROM vaga";
+        try (var connection = getConnection();
+            var stmt = connection.prepareStatement(sql)) {
+            var rs = stmt.executeQuery();
+            while (rs.next()) {
+                opportunities.add(Opportunity.Entity(rs));
+            }
+            return opportunities;
+
+        } catch (SQLException ex) {
+            Util.PrintError("SQL error occurred: " + ex.getMessage());
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
+    public static ArrayList<Opportunity> Filter() {
+        var opportunities = new ArrayList<Opportunity>(){};
+        var sql = "SELECT * FROM vaga";
+        try (var connection = getConnection();
+             var stmt = connection.prepareStatement(sql)) {
+            var rs = stmt.executeQuery();
+            while (rs.next()) {
+                opportunities.add(Opportunity.Entity(rs));
+            }
+            return opportunities;
+
+        } catch (SQLException ex) {
+            Util.PrintError("SQL error occurred: " + ex.getMessage());
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
     public static int Create(Opportunity opportunity)  {
         var sql = "INSERT INTO vaga (Descricao, Estado, Faixa_salarial, EmpresaID) VALUES (?, ?, ?, ?)";
         try (var connection = getConnection();

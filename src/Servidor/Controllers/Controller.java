@@ -12,74 +12,84 @@ public class Controller extends BaseController {
             case "cadastrarCandidato" -> CandidateController.Create(out, request);
 
             case "visualizarCandidato" -> {
-                if(isAuthenticated(out, request))
+                if(isAuthenticatedCandidate(out, request))
                     CandidateController.Read(out, request);
             }
 
             case "atualizarCandidato" -> {
-                if(isAuthenticated(out, request))
+                if(isAuthenticatedCandidate(out, request))
                     CandidateController.Update(out, request);
             }
 
             case "apagarCandidato" -> {
-                if(isAuthenticated(out, request))
+                if(isAuthenticatedCandidate(out, request))
                     CandidateController.Delete(out, request);
             }
 
             case "cadastrarEmpresa" -> CompanyController.Create(out, request);
 
             case "visualizarEmpresa" -> {
-                if(isAuthenticated(out, request))
+                if(isAuthenticatedCompany(out, request))
                     CompanyController.Read(out, request);
             }
 
             case "atualizarEmpresa" -> {
-                if(isAuthenticated(out, request))
+                if(isAuthenticatedCompany(out, request))
                     CompanyController.Update(out, request);
             }
 
             case "apagarEmpresa" -> {
-                if(isAuthenticated(out, request))
+                if(isAuthenticatedCompany(out, request))
                     CompanyController.Delete(out, request);
             }
 
             case "cadastrarVaga" -> {
-                if(isAuthenticated(out, request))
+                if(isAuthenticatedCompany(out, request))
                     OpportunityController.Create(out, request);
             }
 
             case "visualizarVaga" -> {
-                if(isAuthenticated(out, request))
+                if(isAuthenticatedCompany(out, request))
                     OpportunityController.Read(out, request);
             }
 
+            case "listarVagas" -> {
+                if(isAuthenticatedCompany(out, request))
+                    OpportunityController.All(out, request);
+            }
+
+            case "filtrarVagas" -> {
+                if(isAuthenticatedCompany(out, request))
+                    OpportunityController.Filter(out, request);
+            }
+
             case "atualizarVaga" -> {
-                if(isAuthenticated(out, request))
+                if(isAuthenticatedCompany(out, request))
                     OpportunityController.Update(out, request);
             }
 
             case "apagarVaga" -> {
-                if(isAuthenticated(out, request))
+                if(isAuthenticatedCompany(out, request))
                     OpportunityController.Delete(out, request);
             }
 
             case "cadastrarCompetenciaExperiencia" -> {
-                if(isAuthenticated(out, request))
+                if(isAuthenticatedCompany(out, request))
                     CandidateController.CreateCompetences(out, request);
             }
 
             case "visualizarCompetenciaExperiencia" -> {
-                if(isAuthenticated(out, request))
+                if(isAuthenticatedCompany(out, request))
                     CandidateController.ReadCompetences(out, request);
             }
 
             case "atualizarCompetenciaExperiencia" -> {
-                if(isAuthenticated(out, request))
+                if(isAuthenticatedCompany(out, request))
                     CandidateController.UpdateCompetences(out, request);
             }
 
             case "apagarCompetenciaExperiencia" -> {
-                if(isAuthenticated(out, request))
+                if(isAuthenticatedCompany(out, request))
                     CandidateController.DeleteCompetences(out, request);
             }
 

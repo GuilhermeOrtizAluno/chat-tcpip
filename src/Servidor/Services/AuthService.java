@@ -9,12 +9,16 @@ import Servidor.DB.TokenDB;
 import Servidor.Entitites.User;
 import Utils.Util;
 
+import java.util.Objects;
 import java.util.UUID;
 
 public class AuthService {
     public static boolean Exists(String token){
-        var response = new BaseResponse();
         return TokenDB.Exists(token);
+    }
+
+    public static String CompanyOrCandidate(String token){
+        return TokenDB.CompanyOrCandidate(token);
     }
 
     public static AuthResponse SignInCandidate(AuthRequest request){

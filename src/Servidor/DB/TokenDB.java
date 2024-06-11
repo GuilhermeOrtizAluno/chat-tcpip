@@ -21,6 +21,28 @@ public class TokenDB extends BaseDB{
         }
     }
 
+    public static String CompanyOrCandidate(String token) {
+        var sql = "SELECT * FROM token WHERE Token = ?";
+        try (var connection = getConnection();
+             var statement = connection.prepareStatement(sql)) {
+
+            try (var rs = statement.executeQuery()) {
+                if (!rs.next()) {
+                    return null;
+                }
+
+                var company = rs.getInt("EmpresaID");
+                var candidate = rs.getInt("CandidatoID");
+
+                return company != 0 ? "COMPANY" : candidate != 0 ? "CANDIDATE" : null;
+            }
+        } catch (SQLException ex) {
+            Util.PrintError("SQL error occurred: " + ex.getMessage());
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
     public static void Create(String token, Integer candidatoID, Integer empresaID)  {
         var sql = "INSERT INTO token (Token, CandidatoID, EmpresaID) VALUES (?, ?, ?)";
         try (var connection = getConnection();

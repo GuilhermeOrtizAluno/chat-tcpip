@@ -1,5 +1,6 @@
 package Cliente.Services;
 
+import Infrastructure.Requests.OpportunityFilterRequest;
 import Infrastructure.Requests.OpportunityRequest;
 import Utils.Util;
 
@@ -21,6 +22,46 @@ public class OpportunityService extends BaseService {
         request.token = token;
         request.idVaga = id;
         request.email = email;
+
+        return _gson.toJson(request);
+    }
+
+    public static String All(){
+        Util.Println("Digite token:");
+        var token = _scanner.nextLine();
+
+        Util.Println("Digite email:");
+        var email = _scanner.nextLine();
+
+        var request = new OpportunityRequest();
+        request.operacao = "listarVagas";
+        request.token = token;
+        request.email = email;
+
+        return _gson.toJson(request);
+    }
+
+    public static String Filter(){
+        Util.Println("Digite token:");
+        var token = _scanner.nextLine();
+
+        Util.Println("Digite o tipo de filtro:");
+        Util.Println("1 - OR");
+        Util.Println("2 - AND");
+        var type = _scanner.nextInt();
+
+        Util.Println("Digite as copetencias separado por virgula:");
+        var competences = _scanner.nextLine();
+
+        var request = new OpportunityRequest();
+        request.operacao = "filtrarVagas";
+        request.token = token;
+
+        var filters = new OpportunityFilterRequest();
+        filters.tipo = type == 1 ? "OR" : "AND";
+        filters.competencias = List.of(competences.split(","));
+
+        request.filtros = filters;
 
         return _gson.toJson(request);
     }

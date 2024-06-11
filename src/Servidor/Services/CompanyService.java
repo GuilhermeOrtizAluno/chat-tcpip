@@ -5,8 +5,11 @@ import Infrastructure.Responses.AuthResponse;
 import Infrastructure.Responses.BaseResponse;
 import Infrastructure.Responses.CompanyResponse;
 import Servidor.DB.CompanyDB;
+import Servidor.DB.TokenDB;
 import Servidor.Entitites.Company;
 import Servidor.Services.Validations.CompanyValidation;
+
+import java.util.UUID;
 
 public class CompanyService {
     public static CompanyResponse Read(CompanyRequest request) {
@@ -35,17 +38,29 @@ public class CompanyService {
         var validatePassword = CompanyValidation.ValidatePassword(request.senha);
 
         var response = new AuthResponse();
-        if(validateEmail && validatePassword){
-            var company = new Company(request.email, request.senha,
-                    request.ramo, request.descricao, request.cnpj, request.razaoSocial);
-            CompanyDB.Create(company);
-            response.status = 200;
-            response.token = "Empresa Cadastrada com Sucesso!";
-        }else {
-            response.status = 404;
-            response.mensagem = "";
+
+        if(!validateEmail){
+            response.status = 422;
+            response.mensagem = "Formato de email incorreto";
+            return response;
         }
 
+        if(!validatePassword){
+            response.status = 422;
+            response.mensagem = "Formato de senha incorreto";
+            return response;
+        }
+
+        var company = new Company(request.email, request.senha,
+                request.ramo, request.descricao, request.cnpj, request.razaoSocial);
+        CompanyDB.Create(company);
+
+        var uuid = UUID.randomUUID();
+        var token = uuid.toString();
+        TokenDB.Create(token, null, company.Id);
+
+        response.status = 200;
+        response.token = token;
         return response;
     }
 
