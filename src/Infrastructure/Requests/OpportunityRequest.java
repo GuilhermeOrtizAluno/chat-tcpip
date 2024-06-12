@@ -7,7 +7,6 @@ public class OpportunityRequest extends BaseRequest {
     public String descricao;
     public String estado;
     public int faixaSalarial;
-    public String email;
     public List<String> competencias;
     public OpportunityFilterRequest filtros;
 }
