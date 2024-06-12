@@ -52,7 +52,7 @@ public class OpportunityService {
     }
 
     public static OpportunityListResponse Filter(OpportunityRequest request) {
-        var opportunities = OpportunityDB.All();
+        var opportunities = OpportunityDB.Filter(request);
         var response = new OpportunityListResponse();
 
         if(opportunities != null){

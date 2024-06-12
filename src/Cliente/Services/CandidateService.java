@@ -124,6 +124,7 @@ public class CandidateService extends BaseService {
 
                 Util.Println("Digite quantos anos possui de experiencia:");
                 var experience = _scanner.nextInt();
+                _scanner.nextLine();
 
                 request.competenciaExperiencia.add(new CandidateCompetencyRequest (competency, experience));
             }
@@ -153,6 +154,7 @@ public class CandidateService extends BaseService {
             Util.Println("0 - Continuar");
             Util.Println("1 - Adicionar");
             var choice = _scanner.nextInt();
+            _scanner.nextLine();
             if(choice == 0){
                 isCompetencies = false;
             }
@@ -162,6 +164,7 @@ public class CandidateService extends BaseService {
 
                 Util.Println("Digite quantos anos possui de experiencia:");
                 var experience = _scanner.nextInt();
+                _scanner.nextLine();
 
                 request.competenciaExperiencia.add(new CandidateCompetencyRequest (competency, experience));
             }

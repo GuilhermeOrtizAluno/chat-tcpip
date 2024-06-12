@@ -12,6 +12,7 @@ public class CandidateController extends BaseController {
         var request = _gson.fromJson(json, CandidateRequest.class);
 
         var response = CandidateService.Read(request);
+        response.operacao = "visualizarCandidato";
         var result = _gson.toJson(response);
         out.println(result);
     }
@@ -24,6 +25,7 @@ public class CandidateController extends BaseController {
         var request = _gson.fromJson(json, CandidateRequest.class);
 
         var response = CandidateService.Create(request);
+        response.operacao = "cadastrarCandidato";
         var result = _gson.toJson(response);
         out.println(result);
     }
@@ -32,6 +34,7 @@ public class CandidateController extends BaseController {
         var request = _gson.fromJson(json, CandidateRequest.class);
 
         var response = CandidateService.Update(request);
+        response.operacao = "atualizarCandidato";
         var result = _gson.toJson(response);
         out.println(result);
     }
@@ -40,6 +43,7 @@ public class CandidateController extends BaseController {
         var request = _gson.fromJson(json, CandidateRequest.class);
 
         var response = CandidateService.Delete(request);
+        response.operacao = "apagarCandidato";
         var result = _gson.toJson(response);
         out.println(result);
     }
@@ -48,6 +52,7 @@ public class CandidateController extends BaseController {
         var request = _gson.fromJson(json, CandidateCompetenciesRequest.class);
 
         var response = CandidateService.ReadCompetences(request);
+        response.operacao = "visualizarCompetenciaExperiencia";
         var result = _gson.toJson(response);
         out.println(result);
     }
@@ -56,6 +61,7 @@ public class CandidateController extends BaseController {
         var request = _gson.fromJson(json, CandidateCompetenciesRequest.class);
 
         var response = CandidateService.CreateCompetences(request);
+        response.operacao = "cadastrarCompetenciaExperiencia";
         var result = _gson.toJson(response);
         out.println(result);
     }
@@ -64,6 +70,7 @@ public class CandidateController extends BaseController {
         var request = _gson.fromJson(json, CandidateCompetenciesRequest.class);
 
         var response = CandidateService.UpdateCompetences(request);
+        response.operacao = "atualizarCompetenciaExperiencia";
         var result = _gson.toJson(response);
         out.println(result);
     }
@@ -72,6 +79,7 @@ public class CandidateController extends BaseController {
         var request = _gson.fromJson(json, CandidateCompetenciesRequest.class);
 
         var response = CandidateService.DeleteCompetences(request);
+        response.operacao = "apagarCompetenciaExperiencia";
         var result = _gson.toJson(response);
         out.println(result);
     }

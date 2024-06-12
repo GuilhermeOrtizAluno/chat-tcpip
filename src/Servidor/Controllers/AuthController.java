@@ -11,6 +11,7 @@ public class AuthController extends BaseController {
         var request = _gson.fromJson(json, AuthRequest.class);
 
         var response = AuthService.SignInCandidate(request);
+        response.operacao = "loginCandidato";
         var result = _gson.toJson(response);
         out.println(result);
     }
@@ -19,6 +20,7 @@ public class AuthController extends BaseController {
         var request = _gson.fromJson(json, AuthRequest.class);
 
         var response = AuthService.SignInCompany(request);
+        response.operacao = "loginEmpresa";
         var result = _gson.toJson(response);
         out.println(result);
     }
@@ -27,6 +29,7 @@ public class AuthController extends BaseController {
         var request = _gson.fromJson(json, AuthRequest.class);
 
         var response = AuthService.Logout(request.token);
+        response.operacao = "logout";
         var result = _gson.toJson(response);
         out.println(result);
     }

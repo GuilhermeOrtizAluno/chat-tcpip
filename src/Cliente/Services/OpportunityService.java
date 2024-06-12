@@ -13,6 +13,7 @@ public class OpportunityService extends BaseService {
 
         Util.Println("Digite id da vaga:");
         var id = _scanner.nextInt();
+        _scanner.nextLine();
 
         Util.Println("Digite email:");
         var email = _scanner.nextLine();
@@ -49,6 +50,7 @@ public class OpportunityService extends BaseService {
         Util.Println("1 - OR");
         Util.Println("2 - AND");
         var type = _scanner.nextInt();
+        _scanner.nextLine();
 
         Util.Println("Digite as copetencias separado por virgula:");
         var competences = _scanner.nextLine();
@@ -75,6 +77,7 @@ public class OpportunityService extends BaseService {
 
         Util.Println("Digite Faixa Salarial:");
         var salarial = _scanner.nextInt();
+        _scanner.nextLine();
 
         Util.Println("Digite Descriccao:");
         var description = _scanner.nextLine();
@@ -83,6 +86,7 @@ public class OpportunityService extends BaseService {
         Util.Println("1-Disponível)");
         Util.Println("2-Divulgavel):");
         var status = _scanner.nextInt();
+        _scanner.nextLine();
 
         Util.Println("Digite as copetencias separado por virgula:");
         var competences = _scanner.nextLine();
@@ -111,6 +115,7 @@ public class OpportunityService extends BaseService {
 
         Util.Println("Digite Faixa Salarial:");
         var salarial = _scanner.nextInt();
+        _scanner.nextLine();
 
         Util.Println("Digite Descriccao:");
         var description = _scanner.nextLine();
@@ -119,6 +124,7 @@ public class OpportunityService extends BaseService {
         Util.Println("1-Disponível)");
         Util.Println("2-Divulgavel):");
         var status = _scanner.nextInt();
+        _scanner.nextLine();
 
         Util.Println("Digite as copetencias separado por virgula:");
         var competences = _scanner.nextLine();
@@ -142,6 +148,7 @@ public class OpportunityService extends BaseService {
 
         Util.Println("Digite id da vaga:");
         var id = _scanner.nextInt();
+        _scanner.nextLine();
 
         Util.Println("Digite email:");
         var email = _scanner.nextLine();

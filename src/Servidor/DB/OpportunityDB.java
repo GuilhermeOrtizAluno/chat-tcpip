@@ -1,5 +1,6 @@
 package Servidor.DB;
 
+import Infrastructure.Requests.OpportunityRequest;
 import Servidor.Entitites.Competence;
 import Servidor.Entitites.Opportunity;
 import Utils.Util;
@@ -51,11 +52,33 @@ public class OpportunityDB extends BaseDB{
         }
     }
 
-    public static ArrayList<Opportunity> Filter() {
-        var opportunities = new ArrayList<Opportunity>(){};
+    public static ArrayList<Opportunity> Filter(OpportunityRequest request) {
+        var opportunities = new ArrayList<Opportunity>();
         var sql = "SELECT * FROM vaga";
+        var filters = request.filtros;
+        var parameters = new ArrayList<String>();
+
+        if (filters != null && filters.competencias != null && filters.tipo != null
+                && !filters.competencias.isEmpty()) {
+            sql += " WHERE ";
+            int count = 0;
+            for (var competency : filters.competencias) {
+                if (count > 0) {
+                    sql += " " + filters.tipo + " ";
+                }
+                sql += "Titulo = ?";
+                parameters.add(competency);
+                count++;
+            }
+        }
+
         try (var connection = getConnection();
              var stmt = connection.prepareStatement(sql)) {
+
+            for (int i = 0; i < parameters.size(); i++) {
+                stmt.setString(i + 1, parameters.get(i));
+            }
+
             var rs = stmt.executeQuery();
             while (rs.next()) {
                 opportunities.add(Opportunity.Entity(rs));
