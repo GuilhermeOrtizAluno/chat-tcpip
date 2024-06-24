@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>S.D.</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+
+<form id="login">
+    <label>Usuario
+        <input type="text" name="user">
+    </label>
+    <label>Senha
+        <input type="password" name="password">
+    </label>
+    <button type="submit">Entrar</button>
+</form>
+
+<script>
+    $("#login").submit(function(e){
+        e.preventDefault();
+
+        $.ajax({
+            url: "http://localhost:8000/greet",
+            method: "GET",
+            success: function(response){
+                $("#response").text(response);
+            },
+            error: function(jqXHR, textStatus, errorThrown){
+                console.log("Request failed: " + textStatus + ", " + errorThrown);
+            }
+        });
+    });
+
+    $(document).ready(function(){
+        $("#getGreetButton").click(function(){
+            $.ajax({
+                url: "http://localhost:8000/greet",
+                method: "GET",
+                success: function(response){
+                    $("#response").text(response);
+                },
+                error: function(jqXHR, textStatus, errorThrown){
+                    console.log("Request failed: " + textStatus + ", " + errorThrown);
+                }
+            });
+        });
+
+        $("#postGreetButton").click(function(){
+            $.ajax({
+                url: "http://localhost:8000/greet",
+                method: "POST",
+                data: "John Doe",
+                contentType: "text/plain; charset=UTF-8",
+                success: function(response){
+                    $("#response").text(response);
+                },
+                error: function(jqXHR, textStatus, errorThrown){
+                    console.log("Request failed: " + textStatus + ", " + errorThrown);
+                }
+            });
+        });
+
+        $("#getFarewellButton").click(function(){
+            $.ajax({
+                url: "http://localhost:8000/farewell",
+                method: "GET",
+                success: function(response){
+                    $("#response").text(response);
+                },
+                error: function(jqXHR, textStatus, errorThrown){
+                    console.log("Request failed: " + textStatus + ", " + errorThrown);
+                }
+            });
+        });
+
+        $("#postFarewellButton").click(function(){
+            $.ajax({
+                url: "http://localhost:8000/farewell",
+                method: "POST",
+                data: "Jane Doe",
+                contentType: "text/plain; charset=UTF-8",
+                success: function(response){
+                    $("#response").text(response);
+                },
+                error: function(jqXHR, textStatus, errorThrown){
+                    console.log("Request failed: " + textStatus + ", " + errorThrown);
+                }
+            });
+        });
+    });
+</script>
+
+</body>
+</html>

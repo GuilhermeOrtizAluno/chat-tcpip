@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        html,
+        body {
+          width: 100%;
+          margin: 0;
+          padding: 0;
+        }
+
+        body {
+          max-width: 100%;
+          overflow-x: hidden;
+        }
+
+        main{
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        section {
+            width: 500px;
+            height: 500px;
+            background-color: antiquewhite;
+            padding: 20px;
+            display: flex;
+        }
+
+        section > div{
+            width: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        button{
+            border: none;
+            padding: 20px;
+            background-color: darkcyan;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <section>
+            <div>
+                <button type="submit" id="candidate">
+                    Candidato
+                </button>
+            </div>
+            <div>
+                <button type="submit"  id="company">
+                    Empresa
+                </button>
+            </div>
+        </section>
+    </main>
+    <script>
+        $("#candidate").click(function(){
+            window.location.href = "./candidato/login.html";
+        });
+
+        $("#company").click(function(){
+            window.location.href = "./empressa/login.html";
+        });
+    </script>
+</body>
+</html>

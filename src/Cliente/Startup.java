@@ -5,12 +5,15 @@ import Cliente.Services.CandidateService;
 import Cliente.Services.CompanyService;
 import Cliente.Services.OpportunityService;
 import Utils.Util;
+import com.sun.net.httpserver.Headers;
+import com.sun.net.httpserver.HttpExchange;
+import com.sun.net.httpserver.HttpHandler;
+import com.sun.net.httpserver.HttpServer;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
+import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
 public class Startup {
@@ -21,6 +24,63 @@ public class Startup {
     public Startup(String host, int port) throws IOException {
         _host = host;
         _port = port;
+    }
+
+    public void Run(){
+        try {
+            HttpServer server = HttpServer.create(new InetSocketAddress(8000), 0);
+            server.createContext("/cliente", new LoginHandler());
+            server.setExecutor(null); // creates a default executor
+            server.start();
+        } catch (IOException e) {
+            Util.PrintError("Error occurred: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    static class LoginHandler implements HttpHandler {
+        @Override
+        public void handle(HttpExchange exchange) throws IOException {
+            if ("OPTIONS".equals(exchange.getRequestMethod())) {
+                handleOptionsRequest(exchange);
+            } else if ("GET".equals(exchange.getRequestMethod())) {
+                handleGetRequest(exchange);
+            } else if ("POST".equals(exchange.getRequestMethod())) {
+                handlePostRequest(exchange);
+            } else {
+                exchange.sendResponseHeaders(405, -1); // 405 Method Not Allowed
+            }
+        }
+
+        private void handleOptionsRequest(HttpExchange exchange) throws IOException {
+            Headers headers = exchange.getResponseHeaders();
+            headers.add("Access-Control-Allow-Origin", "*");
+            headers.add("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+            headers.add("Access-Control-Allow-Headers", "Content-Type");
+            exchange.sendResponseHeaders(204, -1); // 204 No Content
+        }
+
+        private void handleGetRequest(HttpExchange exchange) throws IOException {
+            Headers headers = exchange.getResponseHeaders();
+            headers.add("Access-Control-Allow-Origin", "*");
+            String response = "Hello, World!";
+            exchange.sendResponseHeaders(200, response.length());
+            OutputStream os = exchange.getResponseBody();
+            os.write(response.getBytes());
+            os.close();
+        }
+
+        private void handlePostRequest(HttpExchange exchange) throws IOException {
+            Headers headers = exchange.getResponseHeaders();
+            headers.add("Access-Control-Allow-Origin", "*");
+            InputStream is = exchange.getRequestBody();
+            String body = new String(is.readAllBytes(), StandardCharsets.UTF_8);
+            String response = "Hello, " + body + "!";
+            exchange.sendResponseHeaders(200, response.length());
+            OutputStream os = exchange.getResponseBody();
+            os.write(response.getBytes());
+            os.close();
+        }
     }
 
     public void Start() {
@@ -133,6 +193,8 @@ public class Startup {
         Util.Println("10 - Adicionar Vaga");
         Util.Println("11 - Editar Vaga");
         Util.Println("12 - Deletar Vaga");
+        Util.Println("12 - Selecionar candidato");
+        Util.Println("9 - Filtrar candidato");
         Util.Println("Escolha uma opcao:");
     }
 }

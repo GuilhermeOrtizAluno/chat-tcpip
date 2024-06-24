@@ -19,12 +19,11 @@ public class Startup {
     public void Start() {
         try {
             var running = true;
-            Util.Println("Aguardando conexão do cliente...");
-            var socket = serverSocket.accept();
-            Util.Println("Cliente conectado.");
+
             while (running) {
-
-
+                Util.Println("Aguardando conexão do cliente...");
+                var socket = serverSocket.accept();
+                Util.Println("Cliente conectado.");
                 var in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 var json = in.readLine();
                 Util.Println("JSON recebido: \n" + json);
@@ -38,6 +37,7 @@ public class Startup {
                     Controller.Route(json, out);
                 }
 
+                socket.close();
             }
             
             serverSocket.close();

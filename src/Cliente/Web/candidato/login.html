@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>S.D.</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+
+<form id="login">
+    <label>Usuario
+        <input type="text" name="user">
+    </label>
+    <label>Senha
+        <input type="password" name="password">
+    </label>
+    <button type="submit">Entrar</button>
+</form>
+<div id="result"></div>
+
+<script>
+    $("#login").submit(function(e){
+        e.preventDefault();
+
+        var user = $("input[name='user']").val();
+        var password = $("input[name='password']").val();
+
+        $.ajax({
+            url: "http://localhost:8000/login",
+            method: "POST",
+            data: JSON.stringify({ user: user, password: password }),
+            success: function(response){
+                $("#result").text(response);
+            },
+            error: function(jqXHR, textStatus, errorThrown){
+                $("#result").text(errorThrown);
+            }
+        });
+    });
+</script>
+
+</body>
+</html>
