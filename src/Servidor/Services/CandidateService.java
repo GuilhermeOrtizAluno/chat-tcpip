@@ -52,11 +52,11 @@ public class CandidateService {
         }
 
         var candidate = new Candidate(request.nome, request.email, request.senha);
-        CandidateDB.Create(candidate);
+        var candidateId = CandidateDB.Create(candidate);
 
         var uuid = UUID.randomUUID();
         var token = uuid.toString();
-        TokenDB.Create(token, candidate.Id,null);
+        TokenDB.Create(token, candidateId,null);
 
         response.status = 201;
         response.token = token;

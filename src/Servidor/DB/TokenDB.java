@@ -26,6 +26,7 @@ public class TokenDB extends BaseDB{
         try (var connection = getConnection();
              var statement = connection.prepareStatement(sql)) {
 
+            statement.setString(1, token);
             try (var rs = statement.executeQuery()) {
                 if (!rs.next()) {
                     return null;
@@ -33,6 +34,8 @@ public class TokenDB extends BaseDB{
 
                 var company = rs.getInt("EmpresaID");
                 var candidate = rs.getInt("CandidatoID");
+                Util.Println("Company: " + company);
+                Util.Println("Candidate: " + candidate);
 
                 return company != 0 ? "COMPANY" : candidate != 0 ? "CANDIDATE" : null;
             }

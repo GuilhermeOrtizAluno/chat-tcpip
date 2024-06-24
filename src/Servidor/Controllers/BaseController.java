@@ -3,6 +3,7 @@ package Servidor.Controllers;
 import Infrastructure.Requests.BaseRequest;
 import Infrastructure.Responses.AuthResponse;
 import Servidor.Services.AuthService;
+import Utils.Util;
 import com.google.gson.Gson;
 
 import java.io.PrintWriter;
@@ -34,14 +35,16 @@ public class BaseController {
             if(!authenticated) {
                 response.status = 404;
                 response.mensagem = "Token nao existe";
-            }else{
-                var typeToken = AuthService.CompanyOrCandidate(response.token);
-                authenticated = Objects.equals(typeToken, type);
-
-                if(!authenticated) {
-                    response.status = 404;
-                    response.mensagem = "Token nao possui acesso para essa requisicao";
-                }
+//            }else if(type == "CANDIDATE"){
+//                var typeToken = AuthService.CompanyOrCandidate(response.token);
+//                authenticated = Objects.equals(typeToken, type);
+//                Util.Println(type);
+//                Util.Println(typeToken);
+//
+//                if(!authenticated) {
+//                    response.status = 404;
+//                    response.mensagem = "Token nao possui acesso para essa requisicao";
+//                }
             }
         }
 

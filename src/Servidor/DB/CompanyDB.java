@@ -4,7 +4,9 @@ import Servidor.Entitites.Company;
 import Servidor.Entitites.User;
 import Utils.Util;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 public class CompanyDB extends BaseDB{
     public static Company Read(String email) {
@@ -27,10 +29,10 @@ public class CompanyDB extends BaseDB{
         }
     }
 
-    public static void Create(Company company) {
+    public static int Create(Company company) {
         var sql = "INSERT INTO empresa (Email, Senha, Descricao, CNPJ, Razao_Social, Ramo) VALUES (?, ?, ?, ?, ?, ?)";
         try (var connection = getConnection();
-             var statement = connection.prepareStatement(sql)) {
+             var statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             statement.setString(1, company.Email);
             statement.setString(2, company.Password);
@@ -40,10 +42,18 @@ public class CompanyDB extends BaseDB{
             statement.setString(6, company.Ramo);
 
             statement.executeUpdate();
+
+            try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    return generatedKeys.getInt(1);
+                }
+            }
         } catch (SQLException ex) {
             Util.PrintError("SQL error occurred: " + ex.getMessage());
             ex.printStackTrace();
         }
+
+        return 0;
     }
 
     public static boolean Update(Company company) {

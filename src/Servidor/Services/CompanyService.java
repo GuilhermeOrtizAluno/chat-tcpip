@@ -53,13 +53,13 @@ public class CompanyService {
 
         var company = new Company(request.email, request.senha,
                 request.ramo, request.descricao, request.cnpj, request.razaoSocial);
-        CompanyDB.Create(company);
+        var companyId = CompanyDB.Create(company);
 
         var uuid = UUID.randomUUID();
         var token = uuid.toString();
-        TokenDB.Create(token, null, company.Id);
+        TokenDB.Create(token, null, companyId);
 
-        response.status = 200;
+        response.status = 201;
         response.token = token;
         return response;
     }

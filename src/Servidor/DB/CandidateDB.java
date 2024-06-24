@@ -1,6 +1,8 @@
 package Servidor.DB;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -33,19 +35,27 @@ public class CandidateDB extends BaseDB {
         }
     }
 
-    public static void Create(Candidate candidate)  {
+    public static int Create(Candidate candidate)  {
         var sql = "INSERT INTO candidato (Nome, Email, Senha) VALUES (?, ?, ?)";
         try (var connection = getConnection();
-             var statement = connection.prepareStatement(sql)) {
+             var statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             statement.setString(1, candidate.Name);
             statement.setString(2, candidate.Email);
             statement.setString(3, candidate.Password);
             statement.executeUpdate();
+
+            try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    return generatedKeys.getInt(1);
+                }
+            }
         } catch (SQLException ex) {
             Util.PrintError("SQL error occurred: " + ex.getMessage());
             ex.printStackTrace();
         }
+
+        return 0;
     }
 
     public static boolean Update(Candidate candidate) {
