@@ -93,6 +93,17 @@ public class Controller extends BaseController {
                     CandidateController.DeleteCompetences(out, request);
             }
 
+            case "selecionarCandidato" -> {
+                if(isAuthenticatedCompany(out, request))
+                    CandidateController.Read(out, request);
+            }
+
+            case "filtrarCandidato" -> {
+                if(isAuthenticatedCompany(out, request))
+                    CandidateController.Read(out, request);
+            }
+
+
             case "loginCandidato" -> AuthController.SignInCandidate(out, request);
 
             case "loginEmpresa" -> AuthController.SignInCompany(out, request);

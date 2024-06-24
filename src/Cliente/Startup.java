@@ -193,8 +193,8 @@ public class Startup {
         Util.Println("10 - Adicionar Vaga");
         Util.Println("11 - Editar Vaga");
         Util.Println("12 - Deletar Vaga");
-        Util.Println("12 - Selecionar candidato");
-        Util.Println("9 - Filtrar candidato");
+        Util.Println("13 - Selecionar candidato");
+        Util.Println("14 - Filtrar candidato");
         Util.Println("Escolha uma opcao:");
     }
 }
