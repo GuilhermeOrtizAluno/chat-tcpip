@@ -5,7 +5,16 @@ import Infrastructure.Requests.CandidateRequest;
 import Infrastructure.Requests.CompanyRequest;
 import Utils.Util;
 
-public class AuthService extends BaseService {
+import java.io.IOException;
+
+public class AuthService extends BaseService  {
+
+    public AuthService(String host, int port) throws IOException {
+        super(host, port);
+    }
+
+
+
     public static String SignInCandidate() {
         Util.Println("Digite email:");
         var email = _scanner.nextLine();

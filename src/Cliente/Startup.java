@@ -1,5 +1,6 @@
 package Cliente;
 
+import Cliente.Controllers.AuthController;
 import Cliente.Services.AuthService;
 import Cliente.Services.CandidateService;
 import Cliente.Services.CompanyService;
@@ -29,7 +30,7 @@ public class Startup {
     public void Run(){
         try {
             HttpServer server = HttpServer.create(new InetSocketAddress(8000), 0);
-            server.createContext("/cliente", new LoginHandler());
+            server.createContext("/cliente/login", new AuthController(_host, _port));
             server.setExecutor(null); // creates a default executor
             server.start();
         } catch (IOException e) {
@@ -38,50 +39,6 @@ public class Startup {
         }
     }
 
-    static class LoginHandler implements HttpHandler {
-        @Override
-        public void handle(HttpExchange exchange) throws IOException {
-            if ("OPTIONS".equals(exchange.getRequestMethod())) {
-                handleOptionsRequest(exchange);
-            } else if ("GET".equals(exchange.getRequestMethod())) {
-                handleGetRequest(exchange);
-            } else if ("POST".equals(exchange.getRequestMethod())) {
-                handlePostRequest(exchange);
-            } else {
-                exchange.sendResponseHeaders(405, -1); // 405 Method Not Allowed
-            }
-        }
-
-        private void handleOptionsRequest(HttpExchange exchange) throws IOException {
-            Headers headers = exchange.getResponseHeaders();
-            headers.add("Access-Control-Allow-Origin", "*");
-            headers.add("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
-            headers.add("Access-Control-Allow-Headers", "Content-Type");
-            exchange.sendResponseHeaders(204, -1); // 204 No Content
-        }
-
-        private void handleGetRequest(HttpExchange exchange) throws IOException {
-            Headers headers = exchange.getResponseHeaders();
-            headers.add("Access-Control-Allow-Origin", "*");
-            String response = "Hello, World!";
-            exchange.sendResponseHeaders(200, response.length());
-            OutputStream os = exchange.getResponseBody();
-            os.write(response.getBytes());
-            os.close();
-        }
-
-        private void handlePostRequest(HttpExchange exchange) throws IOException {
-            Headers headers = exchange.getResponseHeaders();
-            headers.add("Access-Control-Allow-Origin", "*");
-            InputStream is = exchange.getRequestBody();
-            String body = new String(is.readAllBytes(), StandardCharsets.UTF_8);
-            String response = "Hello, " + body + "!";
-            exchange.sendResponseHeaders(200, response.length());
-            OutputStream os = exchange.getResponseBody();
-            os.write(response.getBytes());
-            os.close();
-        }
-    }
 
     public void Start() {
 

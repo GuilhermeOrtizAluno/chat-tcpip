@@ -15,6 +15,7 @@
         body {
           max-width: 100%;
           overflow-x: hidden;
+          background-color: antiquewhite;
         }
 
         main{
@@ -25,52 +26,229 @@
             align-items: center;
         }
 
-        section {
-            width: 500px;
-            height: 500px;
-            background-color: antiquewhite;
-            padding: 20px;
+        .choices{
+            border-radius: 8px 8px 0 0;
+            width: fit-content;
+            overflow: hidden;
             display: flex;
         }
 
-        section > div{
+        .choice{
+            border: none;
+            padding: 10px;
+            background-color: darkcyan;
+            color: white;
+            cursor: pointer;
+        }
+
+        .choice.active{
+            background-color: white;
+            color: darkcyan;
+        }
+
+        .card {
+            width: 800px;
+            height: 500px;
+            background-color: white;
+            display: flex;
+            border-radius: 0 8px 8px 8px;
+        }
+
+         .card > div{
             width: 50%;
+            padding: 20px;
             display: flex;
             justify-content: center;
             align-items: center;
+            flex-direction: column;
+         }
+
+         .title{
+            display: flex;
+            justify-content: start;
+            width: 250px;
+            margin-bottom: 30px;
+         }
+
+         .login{
+            border-right: 1px solid gray;
+         }
+
+         .title span{
+            display: none;
+         }
+
+        .title span.active{
+            display: block;
         }
 
-        button{
-            border: none;
-            padding: 20px;
-            background-color: darkcyan;
-            border-radius: 8px;
+        form{
+            width: 250px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: end;
         }
+
+        form label{
+            width: 100%;
+        }
+
+         form input{
+            width: calc(100% - 10px);
+            margin-bottom: 10px;
+         }
     </style>
 </head>
 <body>
     <main>
         <section>
-            <div>
-                <button type="submit" id="candidate">
+            <div class="choices">
+                <button type="button" id="btn-candidate" class="choice active">
                     Candidato
                 </button>
-            </div>
-            <div>
-                <button type="submit"  id="company">
+                <button type="button" id="btn-company" class="choice">
                     Empresa
                 </button>
+            </div>
+            <div class="card">
+                <div class="login">
+                    <div class="title">
+                        <span class="title1 active">Entrar Candidato</span>
+                        <span class="title2">Entrar Empressa</span>
+                    </div>
+                    <form id="form-login">
+                        <label>Usuario
+                            <input type="text" name="email" autocomplete="email">
+                        </label>
+                        <label>Senha
+                            <input type="password" name="password" autocomplete="current-password">
+                        </label>
+                        <div id="error-form-login">
+                        </div>
+                        <button type="submit">Entrar</button>
+                    </form>
+                </div>
+                <div class="create">
+                    <div class="title">
+                        <span class="title1 active">Cadastrar Candidato</span>
+                        <span class="title2">Cadastrar Empressa</span>
+                    </div>
+                    <div id="candidate">
+                        <form id="form-candidate">
+                            <label>
+                                Nome
+                                <input type="text" name="name">
+                            </label>
+                            <label>
+                                Email
+                                <input type="text" name="email" autocomplete="email">
+                            </label>
+                            <label>
+                                Senha
+                                <input type="password" name="password" autocomplete="current-password">
+                            </label>
+                            <div id="error-form-candidate">
+                            </div>
+                            <button type="submit">Cadastrar</button>
+                        </form>
+                    </div>
+                    <div id="company" style="display: none">
+                        <form id="form-company">
+                            <label>
+                                Razao Social
+                                <input type="text" name="razao" autocomplete="organization">
+                            </label>
+                            <label>
+                                Email
+                                <input type="text" name="email" autocomplete="email">
+                            </label>
+                            <label>
+                                CNPJ
+                                <input type="text" name="cnpj">
+                            </label>
+                            <label>
+                                Descricao
+                                <input type="text" name="description">
+                            </label>
+                            <label>
+                                Ramo
+                                <input type="text" name="ramo">
+                            </label>
+                            <label>
+                                Senha
+                                <input type="password" name="password" autocomplete="current-password">
+                            </label>
+                            <div id="error-form-company">
+
+                            </div>
+                            <button type="submit">Cadastrar</button>
+                        </form>
+                    </div>
+                </div>
             </div>
         </section>
     </main>
     <script>
-        $("#candidate").click(function(){
-            window.location.href = "./candidato/login.html";
+        let candidate = true;
+        $("#btn-candidate").click(function(){
+            $(this).addClass('active');
+            $("#btn-company").removeClass('active');
+            $(".title1").addClass('active');
+            $(".title2").removeClass('active');
+            $('#candidate').css('display', 'block');
+            $('#company').css('display', 'none');
+            candidate = true;
+            //window.location.href = "./candidato/login.html";
         });
 
-        $("#company").click(function(){
-            window.location.href = "./empressa/login.html";
+        $("#btn-company").click(function(){
+            $(this).addClass('active');
+            $("#btn-candidate").removeClass('active');
+            $(".title2").addClass('active');
+            $(".title1").removeClass('active');
+            $('#company').css('display', 'block');
+            $('#candidate').css('display', 'none');
+            candidate = false;
+            //window.location.href = "./empressa/login.html";
         });
+
+        $('#form-login').on('submit', function(event) {
+            event.preventDefault();
+            var formData = $(this).serializeArray();
+            var formDataObject = {};
+
+            $.each(formDataArray, function(index, item) {
+                formDataObject[item.name] = item.value;
+            });
+
+            $.ajax({
+                url: "http://localhost:8000/login",
+                method: "POST",
+                data: JSON.stringify(formDataObject),
+                success: function(response){
+                    window.location.href = "./candidato/index.html"
+                },
+                error: function(jqXHR, textStatus, errorThrown){
+                    $("#error-form-login").text(errorThrown);
+                }
+            });
+        });
+
+        $('#form-candidate').on('submit', function(event) {
+            event.preventDefault();
+
+            var formData = $(this).serializeArray();
+            console.log(formData);
+        });
+
+        $('#form-company').on('submit', function(event) {
+            event.preventDefault();
+
+            var formData = $(this).serializeArray();
+            console.log(formData);
+        });
+
     </script>
 </body>
 </html>

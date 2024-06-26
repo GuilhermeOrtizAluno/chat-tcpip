@@ -5,9 +5,14 @@ import Infrastructure.Requests.CandidateCompetencyRequest;
 import Infrastructure.Requests.CandidateRequest;
 import Utils.Util;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class CandidateService extends BaseService {
+    public CandidateService(String host, int port) throws IOException {
+        super(host, port);
+    }
+
     public static String Read() {
         Util.Println("Digite token:");
         var token = _scanner.nextLine();

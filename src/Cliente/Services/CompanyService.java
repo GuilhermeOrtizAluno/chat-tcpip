@@ -3,7 +3,13 @@ package Cliente.Services;
 import Infrastructure.Requests.CompanyRequest;
 import Utils.Util;
 
+import java.io.IOException;
+
 public class CompanyService extends BaseService {
+    public CompanyService(String host, int port) throws IOException {
+        super(host, port);
+    }
+
     public static String Read(){
         Util.Println("Digite token:");
         var token = _scanner.nextLine();
